@@ -1,0 +1,90 @@
+svc_biz	/api/industryRelation/searchCateTwoInfoByCityIdAndProductLine	List<List<RegionCateTwoDto>>	@Param("productLine") Integer productLine, @Param("cityId") Integer cityId
+svc_biz	/api/industryRelation/searchCateTwoByDeptId	List<DeptCateTwoVo>	@Param("deptId") String bizCrmId
+svc_biz	/api/v1/user/bsp/{id}	CrmUserDto	@Param("id") String id
+svc_biz	/api/v1/user/oa/{oa}	CrmUserDto	@Param("oa") String oa
+svc_biz	/api/v1/user/crm/{id}	CrmUserDto	@Param("id") String id
+svc_biz	/api/v1/user/subordinate/sales/biz/crm/{id}	List<UserSalesVo>	@Param("id") String id
+svc_biz	/api/callLimit/all	List<CallLimitRuleDto>	
+svc_biz	/api/v1/city/all	List<CityDto>	
+svc_biz	/api/v1/city/direct	List<CityDto>	
+svc_biz	/api/city/bspId/{bspId}	CityDto	@Param("bspId") Integer bspId
+svc_biz	/api/productLine/list	List<ProductLineDto>	@Param("bizBspId") String bizBspId
+svc_biz	/api/productLine/list	List<ProductLineDto>	ProductLineQueryDto queryDto
+svc_biz	/api/industryRelation/searchCateTwoByDeptId	List<BizCateTwoDto>	@Param("deptId") String deptId
+svc_biz	/api/role/user/bsp/{bspId}	List<UserRoleDto>	@Param("bspId") String bspId
+svc_biz	/api/v1/biz/jurisdiction/user/bsp/{bspId}/includingvirtual?systemId={systemId}	List<BizDto>	@Param("bspId") String bspId, @Param("systemId") Integer systemId
+svc_biz	/api/v1/biz/jurisdiction/user/crm/{id}	List<BizDto>	@Param("id") String crmUserId, @Param("systemId") Integer systemId
+svc_biz	/api/permission/oa/{oa}	List<Permission>	@Param("oa") String oa
+svc_biz	/api/v1/usercity/nameId/oa/{oa}	List<CityDto>	@Param("oa") String oa
+svc_biz	/api/v1/usercity/nameId/oa/{oa}/productLine/{productLine}?systemId={systemId}	List<CityDto>	@Param("oa") String oa, @Param("productLine") Integer productLine, @Param("systemId") Integer systemId
+svc_biz	/api/groupuser/groupbybspid?bspId={id}	List<GroupUserDto>	@Param("id") String id
+svc_biz	/api/group/groups	List<GroupDto>	
+svc_biz	/api/v3/biz	List<BizDto>	@Param("cityId") int cityId, @Param("bizType") Integer bizType
+svc_biz	/api/v1/datetime/long	long	
+svc_biz	/api/v1/datetime/date	ResultModel<LocalDateTime>	
+svc_biz	/api/v1/biz/crm/{id}	BizDto	@Param("id") String id
+svc_biz	/api/v1/biz/batch/crm/{ids}	List<BizDto>	@Param("ids") String ids
+svc_biz	/api/v1/biz/bsp/{id}	Biz	@Param("id") String bizBspId
+svc_biz	/api/v1/bizbatch/bsp/{ids}	List<BizDto>	@Param("ids") String bspIds
+svc_biz	/api/v1/biz/user/crm/{id}	BizDto	@Param("id") String id
+svc_biz	/api/role/code/{code}	Role	@Param("code") String code
+svc_biz	/api/user/crmRoleId/{crmRoleId}	List<User>	@Param("crmRoleId") String crmRoleId
+svc_biz	/api/v1/user/leader/crm/{id}	List<User>	@Param("id") String id
+svc_biz	/api/role/user/crm/{crmUserId}	List<Role>	@Param("crmUserId") String crmUserId
+svc_biz	/api/role/oa/{oa}	List<Role>	@Param("salesOa") String salesOa
+svc_biz	/api/v1/userpermission/oa/{oa}	ResultModel<List<CrmUserDto>>	@Param("oa") String oa
+svc_biz	/api/user/detail	ResultModel<UserInfoVo>	@Param("crmUserId") String crmUserId, @Param("isDirectCity") boolean isDirectCity, @Param("isOwnerCity") boolean isOwnerCity
+svc_biz	/api/permission/crm/{crmUserId}/{permissionCode}	ResultModel<Boolean>	@Param("crmUserId") String crmUserId, @Param("permissionCode") String permissionCode
+svc_biz	/api/v1/biz/jurisdiction/user/crm/{crmUserId}	List<BizV1>	@Param("crmUserId") String crmUserId
+svc_biz	/api/releaseRule/bizVConfig	List<ReleaseRuleVerticalVo>	@Param ReleaseRuleQueryDto param
+svc_biz	/api/v1/user/bsp/{id}	UserV1	@Param("id") String bspId
+svc_biz	/api/v1/biz/batch/bsp/{ids}	List<BizDto>	@Param("ids") List<String> bspBizIds
+svc_biz	/api/v1/biz/subordinate/bsp/{id}	List<BizDto>	@Param("id") String parentBspId
+svc_biz	/api/v1/biz/subordinate/bsp/{id}/includingself	List<BizDto>	@Param("id") String parentBspId
+svc_biz	/api/v1/biz/batch/crm/{ids}	List<BizDto>	@Param("ids") String bizCrmIds
+svc_biz	/api/city/crmId/{crmId}	CitySimpleVo	@Param("crmId") String crmId
+svc_biz	/api/city/citynames/directcity/{citynames}	List<CitySimpleVo>	@Param("citynames") String citynames
+svc_biz	/api/usercity/city/{bspId}/productLine/{productLine}?systemId=0	List<UserCityVo>	@Param("bspId") String bspId, @Param("productLine") Integer productLine
+svc_biz	/api/user/crm/{userId}/sale/isoperate	Boolean	@Param("masterId") String masterCrmId, @Param("userId") String userCrmId
+svc_biz	/api/user/crm/{crmUserId}/salers	List<UserSimpleDto>	@Param("crmUserId") String crmUserId
+svc_biz	/api/user/crm/{crmUserId}/simplebizs	List<BizSimpleDto>	@Param("crmUserId") String crmUserId
+svc_biz	/api/v1/biz/child/crm/{id}	List<BizV1>	@Param("id") String crmBizId
+svc_biz	/api/v1/user/biz/crm/{bizCrmId}	List<UserV1>	@Param("bizCrmId") String bizCrmId
+svc_biz	/api/v1/biz/fullname/{fullName}	BizV1	@Param("fullName") String fullName
+svc_biz	/api/v1/biz/subordinate/crm/{id}/includingself	List<BizV1>	@Param("id") String crmBizId
+svc_biz	/api/v1/biz/subordinate/page	PageVo<BizV1>	SubBizPageQueryDto queryDto
+svc_biz	/api/biz/list	List<BizVo>	BizQueryDto query
+svc_biz	/api/releaseRule	List<BizVerticalConfigQueryDto>	@Param BizConfigQueryDto param
+svc_biz	/api/usercity/userCrmId/	JSONObject	userId
+crm_svc_opportunity	/api/industryRelation/searchIndustyNameByIds	JSONArray	" params.put(""ids"",sb.substring(0,sb.length()-1));params.put(""industryLevel"",level);"
+crm_svc_opportunity	/api/regionCityRelation/searchCityNameByIds	JSONArray	 params.put("ids",sb.substring(0,sb.length()-1));
+crm_pc	/api/dictionary/releaseReason/list	HttpApiResult<List<ReleaseReasonVo>>	
+crm_pc	/api/circle/bucircle/configIndustry	HttpApiResult<List<IndustryCircleAndRegionVo>>	@Param("crmUserId") String crmUserId
+crm_pc	/api/v1/biz/crm	HttpApiResult<DeptInfoDTO>	@Param("id") String id
+crm_pc	/api/v1/biz/bsp/{id}	HttpApiResult<DeptInfoDTO>	@Param("id") String id
+crm_pc	/api/v1/biz/child/bsp/{id}	Map	@Param("id") String id
+crm_pc	/api/v1/biz/batch/bsp/{ids}	HttpApiResult<List<DeptInfoDTO>>	@Param("ids") String ids
+crm_pc	/api/v1/biz/direct/jurisdiction/user/bsp/{id}	HttpApiResult<List<DeptInfoDTO>>	@Param("id") String id
+crm_pc	/api/v1/biz/jurisdiction/user/bsp/{id}	HttpApiResult<List<DeptInfoDTO>>	@Param("id") String id
+crm_pc	/api/v1/biz/crm/{id}	HttpApiResult<DeptInfoDTO>	@Param("id") String id
+crm_pc	/api/v1/biz/subordinate/crm/{id}	HttpApiResult<List<DeptInfoDTO>>	@Param("id") String id
+crm_pc	/api/v1/biz/crm/{id}	HttpApiResult<BizDto>	@Param("id") String id
+crm_pc	/api/usercity/city/{bspId}/productLine/{productLine}	HttpApiResult<List<CityDTO>>	"@Param(""bspId"")String bspId,@Param(""productLine"")Integer productLine,@Param(""systemId"")Integer systemId"
+crm_pc	/api/v1/user/batch/crm/{ids}	HttpApiResult<List<com.bj58.crm.pc.model.Base.UserDto>>	@Param("ids") String ids
+crm_pc	/api/v3/biz	HttpApiResult<List<BizDto>>	@Param("cityId") int cityId, @Param("bizType") Integer bizType
+crm_pc	/api/usercity/userCrmId/{crmId}	HttpApiResult<List<com.bj58.crm.pc.model.UsercityDTO>>	"@Param(""crmId"")String crmId,@Param(""isDirect"")Boolean isDirect"
+crm_pc	/api/v1/user/crm/{id}	HttpApiResult<UserDto>	@Param("id")String id
+crm_pc	/api/v1/user/oa/{oa}	HttpApiResult<CrmUserDto>	@Param("oa") String oa
+crm_pc	/api/role/user/bsp/{bspId}	HttpApiResult<List<UserRoleDto>>	@Param("bspId") String bspId
+crm_pc	/api/user/crm/{id}/subbizs	HttpApiResult<List<SimpBiz>>	@Param("id") String id
+crm_pc	/api/permission/oa/{oa}/code	HttpApiResult<List<String>>	@Param("oa") String oa
+crm_pc	/api/v1/user/bsp/{id}	HttpApiResult<CrmUserDto>	@Param("id") String id
+crm_pc	/api/user/subordinate/{chiefBspId}/oa/{oa}	HttpApiResult<CrmUserDto>	@Param("chiefBspId") String chiefBspId, @Param("oa") String oa, @Param("systemId") Integer systemId
+crm_pc	/api/qualityCheckLabel/findQcLevelByProductLine?productLine	JSONObject	productLine
+crm_pc	/api//qualityCheckLabel/findQcNameByProLineAndLevel	JSONObject	productLine="+productLine+"&qcLabelLevel="+checkLevels
+crm_pc	/api/permission/oa/%s/code/%s	JSONObject	oa,code
+crm_pc	/api/opp/expiration/hours	JSONObject	
+crm_pc	/api/user/oa	JSONObject	oa
+bp_crm_oppflow	/api/opp/release/reason	JSONObject	
+bp_crm_oppflow	/api/opp/expiration/opphour	JSONObject	" param.put(""cityId"", cityId);param.put(""productLine"", productLine);"
+bp_crm_oppflow	/api/v1/sensitivedata/%s/jurisdant	JSONObject	bspId

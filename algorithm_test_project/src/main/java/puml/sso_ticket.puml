@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+actor 用户浏览器 as user
+autonumber
+user -> 业务域名 : 访问 xxx.58corp.com \n cookie:null
+业务域名 -> 公司sso : 通过sso框架拦截,获取请求头中的Cookie查询\n,此时由于用户未登录所以cookie为null,即查询不到用户信息
+公司sso --> user : 通过后端redirect操作,实现浏览器302,将用户请求重定向到 https://passport.58corp.com/login?service=https%3A%2F%2Fxxx.58corp.com%2F\n此时是第一次302,引导用户登录
+user -> 公司sso : 输入用户名和密码,登录成功后会在passport.58corp.com设置ticket,并且
+user -> 业务域名 : 重定向此时是第二次302,利用ticket登录业务系统 \n携带ticket访问 https://xxx.58corp.com/?ticket=ST-aaa-bbb-passport-58corp-com
+业务域名 -> 公司sso : 调用https://passport.58corp.com/serviceValidate?ticket=ST-aaa-bbb-passport-58corp-com查询用户的信息
+公司sso --> 业务域名 : http返回xml格式的bsp用户基础信息
+业务域名 -> 业务域名 : 根据ticket生成CacheHttpSession对象\n调用updateCacheSessionHeader方法
+业务域名 -> 业务域名 : 在wtable设置 "gsso.session.ST-aaa-bbb-passport-58corp-com.header"\n"gsso.session.ST-aaa-bbb-passport-58corp-com.attribute"的值\n  attribute为bsp用户基本信息,header为访问时间
+业务域名 --> user : 根据ticket设置cookie Set-Cookie :XCRM-SSO-SESSION-ID=ST-aaa-bbb-passport-cloud-58v5-cn; Path=/
+user-> 业务域名 : 请求业务系统的url  xxx.58corp.com/getUserInfo \n cookie:ST-aaa-bbb-passport-cloud-58v5-cn
+业务域名 -> wtable : 根据 gsso.session.ST-aaa-bbb-passport-58corp-com.attribute判断session是否存在
+wtable --> 业务域名 : 存在返回bsp用户对象,不存在返回null
+业务域名 --> user : session存在,处理业务逻辑 ,返回数据
+业务域名 --> user : session不存在,实现浏览器302,将用户请求重定向到 https://passport.58corp.com/login?service=http://xxx.58corp.com/getUserInfo,重复步骤1
+
+
+
+@enduml

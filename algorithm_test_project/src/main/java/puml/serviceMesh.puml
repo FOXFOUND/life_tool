@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+用户 --> 统一平台 : 用户访问 xcrm.58corp.com/fang/getUserInfo
+统一平台 --> 统一平台nginx : 通过location /fang/ 根据系统转发前缀转发到房产的集群
+统一平台nginx --> 房产集群 : 经过统一平台nginx到达房产集群的urI是/fang/getUserInfo
+房产集群 --> 云网关 : 到达房产集群的urI是/fang/getUserInfo
+云网关 --> serviceMesh插件 :  到达serviceMesh的urI是/fang/getUserInfo
+serviceMesh插件 --> serviceMesh插件 : 将/fang/getUserInfo 重写成/getUserInfo
+serviceMesh插件 -->云网关 : 返回重写后的urI /getUserInfo
+云网关 --> 房产服务 : 调用 /getUserInfo 接口,获取数据
+房产服务 --> 云网关 : 返回数据
+云网关 --> 房产集群 : 返回数据
+房产集群 --> 统一平台nginx : 返回数据
+统一平台nginx --> 统一平台 : 返回数据
+统一平台 --> 用户 : 返回数据
+@enduml
