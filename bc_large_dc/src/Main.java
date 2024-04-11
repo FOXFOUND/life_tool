@@ -6,15 +6,15 @@ public class Main {
         System.out.println("开始计算");
 
         //买入价格
-        int buyPrice = 304100;
+        int buyPrice = 6000000;
         //存单到期本息和
-        int endDcIncome = 323850;
+        int endDcIncome = 6522000;
         //持有天数
-        int keepDays = 100;
+        int keepDays = 225;
         //存单到期剩余天数
-        int remainDays = 885;
+        int remainDays = 871;
         //买入期间预期收益率 , 保留两位小数
-        double incomePercentD = 0.02450;
+        double incomePercentD = 0.0454;
         BigDecimal incomePercent = new BigDecimal(incomePercentD);
 
 
