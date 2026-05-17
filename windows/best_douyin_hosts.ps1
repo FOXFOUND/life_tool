@@ -1,7 +1,7 @@
 <#
-抖音全域名双栈优选Hosts - 最终完美版
+抖音全域名双栈优选Hosts - 仅保留延迟最低版本
 ✅ 自动覆盖同域名，不追加
-✅ IPv4/IPv6 交替各测5次
+✅ IPv4/IPv6 交替各测5次，仅保留整体最低
 ✅ 纯TCP 443 无ping
 ✅ 自动清理旧配置
 ✅ 保留原始Hosts内容
@@ -82,7 +82,7 @@ function Get-TcpAvgLatency {
 
 $newRules = @()
 
-# 开始优选所有域名
+# 开始优选所有域名（仅保留延迟最低的IP）
 foreach ($domain in $targetDomains) {
     Write-Host "`n[正在优选] $domain" -ForegroundColor Cyan
 
@@ -118,11 +118,42 @@ foreach ($domain in $targetDomains) {
         }
     }
 
-    # 写入最优结果（覆盖模式，唯一一条）
-    if ($bestV4) { $newRules += "$bestV4`t$domain" }
-    if ($bestV6) { $newRules += "$bestV6`t$domain" }
+    # 核心逻辑：仅保留延迟最低的IP（双栈对比）
+    $finalIP = $null
+    $finalMs = 999999
+    if ($bestV4 -and $bestV6) {
+        # 双栈都存在，选延迟更低的；延迟相同优先IPv4
+        if ($bestV4Ms -le $bestV6Ms) {
+            $finalIP = $bestV4
+            $finalMs = $bestV4Ms
+            Write-Host "  🎯 双栈对比：IPv4 $bestV4 延迟更低($bestV4Ms ms)" -ForegroundColor Yellow
+        } else {
+            $finalIP = $bestV6
+            $finalMs = $bestV6Ms
+            Write-Host "  🎯 双栈对比：IPv6 $bestV6 延迟更低($bestV6Ms ms)" -ForegroundColor Yellow
+        }
+    } elseif ($bestV4) {
+        # 仅IPv4可用
+        $finalIP = $bestV4
+        $finalMs = $bestV4Ms
+        Write-Host "  🎯 仅IPv4可用：$bestV4 ($bestV4Ms ms)" -ForegroundColor Yellow
+    } elseif ($bestV6) {
+        # 仅IPv6可用
+        $finalIP = $bestV6
+        $finalMs = $bestV6Ms
+        Write-Host "  🎯 仅IPv6可用：$bestV6 ($bestV6Ms ms)" -ForegroundColor Yellow
+    } else {
+        # 无解析结果
+        Write-Host "  ❌ 无IPv4/IPv6解析结果" -ForegroundColor Red
+    }
 
-    Write-Host "✅ 完成：IPv4[$bestV4Ms] IPv6[$bestV6Ms]" -ForegroundColor Green
+    # 仅写入最终最优的一条记录
+    if ($finalIP) {
+        $newRules += "$finalIP`t$domain"
+        Write-Host "✅ 完成：最终保留 $finalIP ($finalMs ms)" -ForegroundColor Green
+    } else {
+        Write-Host "✅ 完成：无可用IP" -ForegroundColor Gray
+    }
 }
 
 # 写入新Hosts（完全覆盖旧区块）
@@ -132,4 +163,4 @@ Set-Content -Path $hostsPath -Value $finalContent -Encoding UTF8 -Force
 # 刷新DNS
 ipconfig /flushdns
 
-Write-Host "`n✅ 全部完成！旧记录已覆盖，最优节点已生效！" -ForegroundColor Green
+Write-Host "`n✅ 全部完成！旧记录已覆盖，仅保留各域名延迟最低的IP！" -ForegroundColor Green
