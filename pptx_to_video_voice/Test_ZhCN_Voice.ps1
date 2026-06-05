@@ -1,58 +1,73 @@
 <#
-Edge-TTS 大陆普通话音色试听 - 稳定修复版（自动重试+跳过失败）
+Edge-TTS 全中文音色批量生成：普通话+东北/陕西方言+粤语+台普
+自动重试3次、校验文件>0KB、失败标记跳过
 #>
-
-# 大陆简体普通话 zh-CN 全音色（去掉了不稳定/已废弃的）
-$VoiceList = @(
-    # 女声
-    "zh-CN-XiaoxiaoNeural",  # 晓晓
-    "zh-CN-XiaoyiNeural",    # 晓伊
-    "zh-CN-XiaohanNeural",   # 晓涵
-    "zh-CN-XiaomoNeural",    # 晓墨
-    "zh-CN-XiaoruiNeural",   # 晓睿
-    "zh-CN-XiaoxuanNeural",  # 晓萱
-    "zh-CN-XiaoningNeural",  # 晓宁
-
-    # 男声
-    "zh-CN-YunxiNeural",     # 云希
-    "zh-CN-YunyangNeural",   # 云扬
-    "zh-CN-YunjianNeural",   # 云健
-    "zh-CN-YunxiaNeural",    # 云夏
-    "zh-CN-YunzeNeural"     # 云泽
+# 你提供完整音色清单
+$VoiceAll = @(
+    "zh-CN-XiaoxiaoNeural",
+    "zh-CN-XiaoyiNeural",
+    "zh-CN-YunjianNeural",
+    "zh-CN-YunxiNeural",
+    "zh-CN-YunxiaNeural",
+    "zh-CN-YunyangNeural",
+    "zh-CN-liaoning-XiaobeiNeural",
+    "zh-CN-shaanxi-XiaoniNeural",
+    "zh-HK-HiuGaaiNeural",
+    "zh-HK-HiuMaanNeural",
+    "zh-HK-WanLungNeural",
+    "zh-TW-HsiaoChenNeural",
+    "zh-TW-HsiaoYuNeural"
 )
 
-# 测试文案
-$TestText = "大家好，这是Edge-TTS普通话音色试听，体验AI人声质感。"
+# 分语种测试文本（关键：方言/粤语/台普用对应话术，大幅减少0KB报错）
+$Txt_zhCN = "大家好，这里是标准普通话试听，感受AI人声效果。"
+$Txt_Dialect = "今儿天气不错，出来唠唠嗑，尝尝本地特色小吃。" #东北/陕西
+$Txt_Cantonese = "今日天氣好好，一齊出去行下街，飲啖茶食個包。" #粤语
+$Txt_TW = "今天天氣很棒，出門逛逛、喝杯飲料吧。" #台普
 
-# 创建输出目录
-$OutDir = Join-Path $PWD.Path "zh-CN_稳定试听"
-if (-not (Test-Path $OutDir)) { New-Item -ItemType Directory -Path $OutDir | Out-Null }
+# 输出文件夹
+$SaveDir = Join-Path $PWD.Path "All_Chinese_Voice_Audio"
+if (-not(Test-Path $SaveDir)) {New-Item $SaveDir -ItemType Directory | Out-Null}
 
-Write-Host "===== 开始生成稳定版zh-CN音色试听 =====" -ForegroundColor Cyan
+Write-Host "==== 开始批量生成12款中文语音 ====`n" -ForegroundColor Cyan
 
-# 循环生成（带重试+跳过）
-foreach ($voice in $VoiceList) {
-    $mp3 = Join-Path $OutDir "$voice.mp3"
-    Write-Host "`n正在生成：$voice" -ForegroundColor Yellow
+foreach ($voice in $VoiceAll) {
+    $OutFile = Join-Path $SaveDir "$voice.mp3"
+    # 匹配语种选文本
+    if ($voice -match "^zh-CN-liaoning|zh-CN-shaanxi"){
+        $UseText = $Txt_Dialect
+    }elseif ($voice -match "^zh-HK"){
+        $UseText = $Txt_Cantonese
+    }elseif ($voice -match "^zh-TW"){
+        $UseText = $Txt_TW
+    }else{
+        $UseText = $Txt_zhCN
+    }
 
-    # 最多重试2次，避免卡死
-    $success = $false
-    for ($i = 0; $i -lt 2; $i++) {
-        try {
-            edge-tts --voice $voice --text $TestText --write-media $mp3 2>&1 | Out-Null
-            if (Test-Path $mp3) { $success = $true; break }
+    Write-Host "正在处理：$voice" -ForegroundColor Yellow
+    $ok = $false
+    # 最多重试3轮
+    for($r=1;$r -le 3;$r++){
+        # 清理旧空文件
+        if(Test-Path $OutFile){Remove-Item $OutFile -Force -ErrorAction SilentlyContinue}
+        # 执行合成，屏蔽控制台报错
+        edge-tts --voice $voice --text "$UseText" --write-media $OutFile 2>&1 | Out-Null
+        Start-Sleep 0.8
+        # 判断文件>0KB才算成功
+        if((Test-Path $OutFile) -and ((Get-Item $OutFile).Length -gt 1024)){
+            $ok = $true
+            break
         }
-        catch { }
-        Start-Sleep 1
     }
 
-    if ($success) {
-        Write-Host "✅ 成功：$voice" -ForegroundColor Green
-    }
-    else {
-        Write-Host "❌ 跳过：$voice（接口不稳定）" -ForegroundColor Red
+    if($ok){
+        Write-Host "✅ 生成成功：$voice`n" -ForegroundColor Green
+    }else{
+        Write-Host "❌ 多次失败，接口限制作废：$voice`n" -ForegroundColor Red
+        # 删除残留0kb空文件
+        if(Test-Path $OutFile){Remove-Item $OutFile -Force -ErrorAction SilentlyContinue}
     }
 }
 
-Write-Host "`n===== 全部完成！音频目录：$OutDir =====" -ForegroundColor Cyan
-Start-Process $OutDir
+Write-Host "==== 全部任务结束，音频目录：$SaveDir ====" -ForegroundColor Cyan
+Start-Process $SaveDir
