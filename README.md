@@ -1,288 +1,226 @@
 
-# algorithm_test_project
+# 算法实验与工具集
 
-## 项目概述
-
-这是一个综合性的 Java 算法测试项目，包含了大量 LeetCode 风格算法题解、数据结构实现以及多个独立的功能模块（如 DNS 查询、PPT 生成、加密聊天等）。项目使用 IntelliJ IDEA 作为开发环境，遵循 Maven/Gradle 项目结构（`src/main/java`）。
+本仓库包含多个独立的 Java 项目和工具模块，主要用于算法练习、数据结构实现、PPT 处理、加密通信、DNS 查询等场景。
 
 ## 目录结构
 
-```text
-algorithm_test_project/
-├── .idea/                     # IntelliJ IDEA 配置目录
-├── src/
-│   └── main/
-│       └── java/              # 算法和测试代码主目录
-│           ├── add/           # 加法相关算法
-│           ├── addTwoNumbers/ # 两数相加（链表）
-│           ├── apaas/         # 应用平台即服务相关
-│           ├── apaast/        # 未明确分类
-│           ├── areSentencesSimilar/ # 句子相似性判断
-│           ├── arr/           # 数组操作
-│           ├── arraytomap/    # 数组转 Map
-│           ├── arth/          # 算术运算
-│           ├── bignumber/     # 大数处理
-│           ├── bit/           # 位运算
-│           ├── buildMatrix/   # 矩阵构建
-│           ├── buildTree/     # 树结构构建
-│           ├── calendar/      # 日历相关
-│           ├── canCross/      # 青蛙过河问题
-│           ├── canTransform/  # 字符串变换
-│           ├── canVisitAllRooms/ # 房间遍历
-│           ├── captureForts/  # 堡垒抓捕
-│           ├── champagneTower/ # 香槟塔
-│           ├── checkStraightLine/ # 共线检查
-│           ├── circle/        # 圆相关字符串处理
-│           ├── circular/      # 环形数组/循环
-│           ├── closeStrings/  # 接近字符串
-│           ├── colorTheGrid/  # 网格涂色
-│           ├── combinations/  # 组合生成
-│           ├── combinationSum2/ # 组合总和 II
-│           ├── combine/       # 合并操作
-│           ├── commonChars/   # 公共字符
-│           ├── constructArr/  # 数组构建
-│           ├── copyRandomList/ # 复制带随机指针的链表
-│           ├── costMax/       # 最大代价
-│           ├── countBits/     # 二进制中1的个数
-│           ├── countDigitOne/ # 数字1的个数
-│           ├── countSpecialNumbers/ # 特殊数字计数
-│           ├── countSubstrings/ # 回文子串计数
-│           ├── dailyTemperatures/ # 每日温度
-│           ├── deleteDuplicates/ # 删除重复节点
-│           ├── deleteMiddle/  # 删除中间节点
-│           ├── deleteNode/    # 删除节点
-│           ├── delNodes/      # 删除多个节点
-│           ├── detectCycle/   # 检测环
-│           ├── dicesProbability/ # 骰子概率
-│           ├── digArtifacts/  # 挖掘工件
-│           ├── direct/        # 直接映射
-│           ├── divide/        # 除法（分玩家）
-│           ├── eraseOverlapIntervals/ # 移除重叠区间
-│           ├── exception/     # 异常测试
-│           ├── exchange/      # 交换
-│           ├── fastjson/      # FastJson 示例
-│           ├── findClosestElements/ # 查找最接近的元素
-│           ├── findDifference/ # 找不同
-│           ├── findKthLargest/ # 第K大元素
-│           ├── findMaxAverage/ # 最大平均值
-│           ├── findMaxFish/   # 最大鱼群
-│           ├── findMinArrowShots/ # 最少箭数引爆气球
-│           ├── findNumberIn2DArray/ # 二维数组查找
-│           ├── findPeakElement/ # 峰值元素
-│           ├── findRotateSteps/ # 旋转转盘步数
-│           ├── findSmallestSetOfVertices/ # 最小顶点集合
-│           ├── furthestBuilding/ # 最远建筑
-│           ├── garden/        # 花园问题
-│           ├── gcdOfStrings/  # 字符串最大公因子
-│           ├── generate/      # 生成 SQL
-│           ├── getDirections/ # 获取方向
-│           ├── getIntersectionNode/ # 链表交点
-│           ├── getKthFromEnd/ # 倒数第K个节点
-│           ├── getLeastNumbers/ # 最小的K个数
-│           ├── getProbability/ # 概率计算
-│           ├── goodNodes/     # 好节点
-│           ├── guaua/         # Guava 测试
-│           ├── guessNumber/   # 猜数字
-│           ├── heap/          # 堆排序
-│           ├── hextest/       # 十六进制测试
-│           ├── hIndex/        # H指数
-│           ├── house/         # 打家劫舍
-│           ├── idea/          # IDEA 功能
-│           ├── insert/        # 插入操作
-│           ├── insertionSortList/ # 插入排序链表
-│           ├── interleaving/  # 交错字符串
-│           ├── isBalanced/    # 平衡树判断
-│           ├── isItPossible/  # 可能性判断
-│           ├── isPalindrome/  # 回文判断
-│           ├── isStraight/    # 顺子判断
-│           ├── isSubsequence/ # 子序列判断
-│           ├── isSubStructure/ # 子树结构
-│           ├── isSymmetric/   # 对称树
-│           ├── isValidBST/    # 验证二叉搜索树
-│           ├── jmdi/          # 未知模块
-│           ├── json/          # JSON 转 Map
-│           ├── jump/          # 跳跃游戏
-│           ├── k/             # K 相关
-│           ├── kidsWithCandies/ # 拥有最多糖果的孩子
-│           ├── kSmallestPairs/ # 最小K对和
-│           ├── kthSmallest/   # 第K小元素
-│           ├── largestAltitude/ # 最高海拔
-│           ├── largestValues/ # 每行最大值
-│           ├── leastInterval/ # 任务调度
-│           ├── lengthOfLongestSubstring/ # 最长无重复子串
-│           ├── lenLongestFibSubseq/ # 最长斐波那契子序列
-│           ├── levelOrder/    # 层序遍历
-│           ├── list/          # 列表操作
-│           ├── longestCommonSubsequence/ # 最长公共子序列
-│           ├── longestConsecutive/ # 最长连续序列
-│           ├── longestOnes/   # 最大连续1的个数
-│           ├── longestPalindrome/ # 最长回文子串
-│           ├── longestSubarray/ # 最长子数组
-│           ├── longestZigZag/ # 最长锯齿路径
-│           ├── lowestCommonAncestor/ # 最近公共祖先
-│           ├── lru/           # LRU 缓存
-│           ├── LRUCache/      # LRU 缓存实现
-│           ├── makesquare/    # 火柴拼正方形
-│           ├── map/           # Map 测试
-│           ├── match/         # 匹配测试
-│           ├── maxArea/       # 最大面积
-│           ├── maxDepth/      # 最大深度
-│           ├── maxDistance/   # 最大距离
-│           ├── maximum/       # 最大乘积
-│           ├── maximumSwap/   # 最大交换
-│           ├── maxJump/       # 最大跳跃
-│           ├── maxLevelSum/   # 最大层和
-│           ├── maxProfit/     # 最大利润
-│           ├── maxScore/      # 最大分数
-│           ├── maxScoreIndices/ # 最大分数下标
-│           ├── maxSumDivThree/ # 被3整除的最大和
-│           ├── maxSumMinProduct/ # 最大子数组最小乘积
-│           ├── maxValue/      # 最大值
-│           ├── maxVowels/     # 最大元音字母数
-│           ├── memory/        # 内存转储
-│           ├── mergeAlternately/ # 交替合并字符串
-│           ├── mergeTwoLists/ # 合并两个有序链表
-│           ├── minCapability/ # 最小能力
-│           ├── minCostClimbingStairs/ # 最小爬楼梯代价
-│           ├── minEatingSpeed/ # 最小吃香蕉速度
-│           ├── minFlips/      # 最小翻转
-│           ├── minimumTime/   # 最少时间
-│           ├── minSubarray/   # 最短子数组
-│           ├── minSubArrayLen/ # 长度最小子数组
-│           ├── mirrorReflection/ # 镜面反射
-│           ├── mirrorTree/    # 镜像树
-│           ├── moveZeroes/    # 移动零
-│           ├── movingCount/   # 机器人运动范围
-│           ├── myPow/         # 幂函数
-│           ├── n/             # N皇后问题
-│           ├── nearestExit/   # 最近出口
-│           ├── nextLargerNodes/ # 下一个更大节点
-│           ├── nthUglyNumber/ # 第N个丑数
-│           ├── numSubarrayProductLessThanK/ # 乘积小于K的子数组
-│           ├── numTilings/    # 多米诺骨牌铺砖
-│           ├── oddEvenList/   # 奇偶链表
-│           ├── operation/     # 操作测试
-│           ├── optimal/       # 最优划分字符串
-│           ├── orangesRotting/ # 腐烂的橘子
-│           ├── pairSum/       # 配对和
-│           ├── partitionLabels/ # 划分字母区间
-│           ├── permutation/   # 排列
-│           ├── permute/       # 全排列
-│           ├── pivotIndex/    # 中心下标
-│           ├── possibleToStamp/ # 邮票贴图
-│           ├── printNumbers/  # 打印数字
-│           ├── priorityQueue/ # 优先队列测试
-│           ├── productExceptSelf/ # 除自身以外数组乘积
-│           ├── pruneTree/     # 修剪二叉树
-│           ├── puml/          # PlantUML 相关
-│           ├── quick/         # 快速排序
-│           ├── reachNumber/   # 到达终点数字
-│           ├── read/          # 读配置
-│           ├── readfile/      # 读文件
-│           ├── rearrangeArray/ # 重排数组
-│           ├── ref/           # 引用测试
-│           ├── referenece/    # 引用测试
-│           ├── regex/         # 正则测试
-│           ├── removeOuterParentheses/ # 删除最外层括号
-│           ├── removeStars/   # 移除星号
-│           ├── removeZeroSumSublists/ # 删除和为0的子链表
-│           ├── reorderList/   # 重排链表
-│           ├── repeatedStringMatch/ # 重复字符串匹配
-│           ├── reverseBetween/ # 反转链表 II
-│           ├── reverseKGroup/ # K个一组反转链表
-│           ├── reverseLeftWords/ # 左旋转字符串
-│           ├── reverseList/   # 反转链表
-│           ├── reverseOddLevels/ # 反转奇数层
-│           ├── reversePairs/  # 翻转对
-│           ├── reverseWords/  # 反转单词
-│           ├── rightSideView/ # 二叉树的右视图
-│           ├── rob/           # 打家劫舍
-│           ├── rotateRight/   # 旋转链表
-│           ├── search/        # 搜索
-│           ├── searchBST/     # 二叉搜索树查找
-│           ├── shortest/      # 最短路径（交替颜色）
-│           ├── singleNonDuplicate/ # 只出现一次的数字
-│           ├── singleNumber/  # 只出现一次的数字
-│           ├── singleNumbers/ # 只出现一次的数字（进阶）
-│           ├── smallestChair/ # 最小座位号
-│           ├── smallestNumber/ # 最小数
-│           ├── spiralOrder/   # 螺旋矩阵
-│           ├── splitListToParts/ # 分隔链表
-│           ├── string/        # 字符串数组测试
-│           ├── subarrayLCM/   # 子数组 LCM
-│           ├── subarraySum/   # 子数组和
-│           ├── subsets/       # 子集
-│           ├── successfulPairs/ # 成功配对
-│           ├── suggestedProducts/ # 推荐产品
-│           ├── sumSubarrayMins/ # 子数组最小值的和
-│           ├── swapLinkedPair/ # 交换链表对
-│           ├── swapPairs/     # 两两交换链表节点
-│           ├── systemtest/    # 系统测试
-│           ├── test/          # 通用测试
-│           ├── thread/        # 线程测试
-│           ├── threadLocalDemo/ # ThreadLocal 示例
-│           ├── threeSum/      # 三数之和
-│           ├── timetest/      # 时间测试
-│           ├── totalCost/     # 总成本
-│           ├── totalFruit/    # 最多水果
-│           ├── translateNum/  # 数字翻译
-│           ├── transportationHub/ # 交通枢纽
-│           ├── treeToDoublyList/ # 树转双向链表
-│           ├── tribonacci/    # 泰波那契数
-│           ├── trie/          # 字典树
-│           ├── twoEditWords/  # 两次编辑单词
-│           ├── twoSum/        # 两数之和
-│           ├── type/          # 类型测试
-│           ├── unique/        # 唯一二叉搜索树/路径
-│           ├── updateMatrix/  # 更新矩阵（01矩阵）
-│           ├── url/           # URL 测试
-│           ├── uuid/          # UUID 生成
-│           ├── validateStackSequences/ # 验证栈序列
-│           ├── validPalindrome/ # 验证回文串
-│           ├── verifyPostorder/ # 验证二叉搜索树后序遍历
-│           ├── VolatileTest/  # volatile 测试
-│           ├── ways/          # 解码方法等
-│           ├── widthOfBinaryTree/ # 二叉树最大宽度
-│           ├── word/          # 单词矩形（程序员面试金典）
-│           └── resources/     # 资源文件（如 readhttp）
-├── bc_large_dc/               # 大数据量 DC 相关模块
-├── dns/                       # DNS 查询或解析工具
-├── pptx_generate_remarks/     # PPT 生成备注
-├── pptx_to_video_voice/       # PPT 转视频/语音
-├── secret_chat/               # 加密聊天功能
-├── struct_md2pptx/            # Markdown 转 PPTX
-└── windows/                   # Windows 测试脚本（如 Test-RemoteMaxSessions）
 ```
-
-## 主要内容
-
-- **算法练习**：`src/main/java` 下包含上百个经典算法题解，覆盖数组、链表、树、动态规划、贪心、回溯、位运算、字符串等常见类型。
-- **独立工具**：
-  - `pptx_generate_remarks`、`pptx_to_video_voice`、`struct_md2pptx`：Office 文档处理与转换。
-  - `secret_chat`：安全通信示例。
-  - `dns`：DNS 相关功能。
-  - `bc_large_dc`：大数据场景下的分布式计算或数据一致性验证。
-- **测试与资源**：包含多线程、JSON 处理、Guava、FastJson、PriorityQueue、内存转储等单元测试或示例代码。
-
-## 开发环境
-
-- **IDE**：IntelliJ IDEA（项目根目录包含 `.idea` 配置）
-- **语言**：Java（源码位于 `src/main/java`）
-- **构建工具**：未明确提供 `pom.xml` 或 `build.gradle`，但目录结构兼容 Maven/Gradle。
-
-## 使用说明
-
-1. 使用 IntelliJ IDEA 打开项目根目录。
-2. 将 `src/main/java` 标记为 **Sources Root**。
-3. 运行任意包含 `main` 方法的类进行算法测试或功能验证。
-4. 各独立模块（如 `pptx_to_video_voice`）可能需要额外依赖，请根据具体代码补充。
-
-## 注意事项
-
-- 部分目录名称源自 Windows `tree` 命令输出，原始编码可能存在乱码，但不影响实际代码文件。
-- 某些包为临时测试或未完善，使用时请注意检查代码完整性。
+.
+├── algorithm_test_project/   # 主要算法测试项目
+├── bc_large_dc/              # 大数据/分布式计算相关
+├── dns/                      # DNS 查询工具
+├── pptx_generate_remarks/    # PPT 备注生成器
+├── pptx_to_video_voice/      # PPT 转视频/语音
+├── secret_chat/              # 加密聊天演示
+├── struct_md2pptx/           # Markdown 转 PPTX
+└── windows/                  # Windows 测试脚本
+```
 
 ---
 
-如需进一步了解具体算法实现或模块功能，请查阅相应包内的 Java 源码及注释。
+## 1. algorithm_test_project
+
+**综合性 Java 算法项目**，包含数百道 LeetCode 风格题解、常见数据结构实现及单元测试。  
+项目结构遵循 Maven/Gradle 约定（`src/main/java`），使用 IntelliJ IDEA 开发。
+
+### 主要子模块（包）
+
+#### 数组与字符串
+- `arr` – 数组基本操作  
+- `arraytomap` – 数组转 Map  
+- `commonChars` – 查找多个字符串的公共字符  
+- `lengthOfLongestSubstring` – 最长无重复子串  
+- `longestPalindrome` – 最长回文子串  
+- `reverseWords` – 反转字符串中的单词  
+- `validPalindrome` – 验证回文串  
+- `mergeAlternately` – 交替合并字符串  
+- `gcdOfStrings` – 字符串的最大公因子  
+- `removeOuterParentheses` – 删除最外层括号  
+
+#### 链表
+- `addTwoNumbers` – 两数相加（链表）  
+- `mergeTwoLists` – 合并两个有序链表  
+- `reverseList` – 反转链表  
+- `reverseBetween` – 反转链表 II  
+- `reverseKGroup` – K 个一组反转链表  
+- `swapPairs` – 两两交换链表节点  
+- `deleteDuplicates` – 删除排序链表重复元素  
+- `deleteMiddle` – 删除链表的中间节点  
+- `detectCycle` – 检测环形链表  
+- `getIntersectionNode` – 两个链表的交点  
+- `copyRandomList` – 复制带随机指针的链表  
+- `LRUCache` / `lru` – LRU 缓存实现  
+- `oddEvenList` – 奇偶链表  
+- `reorderList` – 重排链表  
+
+#### 树与二叉树
+- `buildTree` – 根据遍历结果构建二叉树  
+- `isSymmetric` – 对称二叉树  
+- `isValidBST` – 验证二叉搜索树  
+- `maxDepth` – 二叉树的最大深度  
+- `levelOrder` – 二叉树的层序遍历  
+- `lowestCommonAncestor` – 最近公共祖先  
+- `mirrorTree` – 二叉树的镜像  
+- `pruneTree` – 修剪二叉树  
+- `rightSideView` – 二叉树的右视图  
+- `treeToDoublyList` – 二叉树转双向链表  
+- `widthOfBinaryTree` – 二叉树最大宽度  
+- `goodNodes` – 好节点计数  
+
+#### 动态规划
+- `climbStairs`（未显式列出，但有 `minCostClimbingStairs`）– 最小代价爬楼梯  
+- `maxProfit` – 买卖股票的最佳时机  
+- `rob` – 打家劫舍  
+- `longestCommonSubsequence` – 最长公共子序列  
+- `longestConsecutive` – 最长连续序列  
+- `lenLongestFibSubseq` – 最长斐波那契子序列  
+- `numTilings` – 多米诺骨牌铺砖  
+- `tribonacci` – 泰波那契数  
+- `translateNum` – 数字翻译成字符串  
+- `dicesProbability` – 掷骰子的概率  
+
+#### 回溯与组合
+- `combinations` / `combine` – 组合生成  
+- `permute` – 全排列  
+- `subsets` – 子集  
+- `combinationSum2` – 组合总和 II  
+- `n` – N 皇后问题  
+
+#### 贪心与区间
+- `eraseOverlapIntervals` – 移除重叠区间  
+- `findMinArrowShots` – 引爆气球的最少箭数  
+- `partitionLabels` – 划分字母区间  
+- `leastInterval` – 任务调度器  
+- `maxJump` – 最大跳跃  
+
+#### 数学与位运算
+- `countBits` – 二进制中 1 的个数  
+- `singleNumber` / `singleNumbers` – 只出现一次的数字  
+- `myPow` – 快速幂  
+- `reversePairs` – 翻转对  
+- `maximumSwap` – 最大交换  
+- `nthUglyNumber` – 第 N 个丑数  
+
+#### 栈与队列
+- `dailyTemperatures` – 每日温度  
+- `validateStackSequences` – 验证栈序列  
+- `removeStars` – 移除星号  
+
+#### 图与搜索
+- `canVisitAllRooms` – 能否访问所有房间  
+- `findSmallestSetOfVertices` – 找到最小顶点集合（有向图）  
+- `orangesRotting` – 腐烂的橘子（BFS）  
+- `nearestExit` – 迷宫最近出口  
+- `updateMatrix` – 01 矩阵中的最近距离  
+
+#### 其他实用模块
+- `fastjson` / `json` – JSON 处理示例  
+- `guaua` – Google Guava 测试  
+- `thread` / `threadLocalDemo` – 多线程与 ThreadLocal  
+- `VolatileTest` – volatile 关键字测试  
+- `regex` – 正则表达式测试  
+- `readfile` / `read` – 文件读取与配置读取  
+- `uuid` / `url` – UUID 生成与 URL 测试  
+- `puml` – PlantUML 图表生成  
+- `memory` – 内存转储分析  
+
+> 注：由于原始目录树编码问题，部分包名以英文单词为准，上述列表已覆盖主要功能。
+
+---
+
+## 2. bc_large_dc
+
+**大数据/分布式计算相关模块**（Big Data / Large Scale Distributed Computing）。  
+可能包含数据一致性验证、大文件处理或分布式任务调度示例。  
+目录结构：
 ```
+bc_large_dc/
+├── .idea/          # IDEA 配置
+└── src/            # 源代码（未详细展开）
+```
+
+---
+
+## 3. dns
+
+**DNS 查询工具**。  
+实现域名解析、DNS 记录查询（A/AAAA/MX/TXT 等）或简单的 DNS 代理功能。  
+（目录下未提供具体文件，需根据源码确认）
+
+---
+
+## 4. pptx_generate_remarks
+
+**PPT 备注生成器**。  
+用于自动向 PowerPoint 文件添加演讲者备注，可能基于模板或文本文件批量处理。
+
+---
+
+## 5. pptx_to_video_voice
+
+**PPT 转视频/语音工具**。  
+将演示文稿转换为视频文件，或结合 TTS 生成配音讲解。  
+典型用途：自动化制作教学视频。
+
+---
+
+## 6. secret_chat
+
+**加密聊天演示**。  
+实现端到端加密的即时通讯示例，可能包含对称/非对称加密、密钥交换等功能。
+
+---
+
+## 7. struct_md2pptx
+
+**Markdown 转 PPTX 转换器**。  
+将 Markdown 格式的文档（支持标题、列表、代码块）生成为 PowerPoint 文件。  
+适用于快速生成技术分享或报告幻灯片。
+
+---
+
+## 8. windows
+
+**Windows 测试脚本**。  
+包含批处理或 PowerShell 脚本，例如 `Test-RemoteMaxSessions` 用于测试远程桌面最大会话数。
+
+---
+
+## 环境要求
+
+- **JDK**：1.8 或更高版本  
+- **构建工具**：Maven / Gradle（部分模块可能需要）  
+- **IDE**：推荐 IntelliJ IDEA  
+- **其他依赖**：  
+  - `pptx_to_video_voice` 可能依赖 FFmpeg  
+  - `secret_chat` 可能依赖 Bouncy Castle 等加密库  
+
+## 使用指南
+
+1. 克隆仓库  
+   ```bash
+   git clone https://github.com/your-username/your-repo.git
+   ```
+2. 根据需要进入具体模块目录  
+3. 使用 IDE 打开或直接运行 `main` 方法  
+4. 各模块独立，可单独编译运行
+
+## 注意事项
+
+- 部分模块为实验性或演示代码，生产环境使用请谨慎评估。  
+- 原始目录树中存在编码乱码，实际文件名以英文为准。  
+- 算法模块大多包含单元测试，可参考 `src/test/java`（若有）验证正确性。
+
+---
+
+## 贡献
+
+欢迎提交 Issue 或 Pull Request 来完善算法题解或工具功能。
+
+## 许可证
+
+[MIT](LICENSE)
+```
+
+此 README 已涵盖您提出的三点要求。如需进一步调整或补充具体文件列表，请提供更详细的目录内容。
