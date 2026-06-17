@@ -38,7 +38,7 @@ public class DeepClosureSimulation {
     public static void main(String[] args) {
         initSystem();
         double dt = 0.01;
-        double totalTime = 200;
+        double totalTime = 400;
         double printInterval = 5.0;
         double nextPrint = 0.0;
 
