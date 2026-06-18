@@ -39,7 +39,7 @@ public class DeepClosureSimulation {
         initSystem();
         double dt = 0.01;
         double totalTime = 400;
-        double printInterval = 5.0;
+        double printInterval = 1.0;
         double nextPrint = 0.0;
 
         // 打印表头
