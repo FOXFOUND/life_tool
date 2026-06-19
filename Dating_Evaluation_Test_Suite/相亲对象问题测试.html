@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相亲对象评估 - 用户问卷</title>
+    <style>
+        :root {
+            --bg: #f5f0eb;
+            --card-bg: #ffffff;
+            --primary: #8b5e3c;
+            --primary-light: #a0784c;
+            --accent: #c8956c;
+            --text: #2c2416;
+            --text-secondary: #5c4a3a;
+            --border: #e0d5c7;
+            --tag-bg: #faf6f1;
+            --shadow: 0 2px 12px rgba(60, 30, 10, .06);
+            --shadow-hover: 0 6px 24px rgba(60, 30, 10, .10);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --transition: .25s cubic-bezier(.4, 0, .2, 1);
+            --font-serif: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', 'KaiTi', 'STKaiti', serif;
+            --font-sans: 'Inter', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            background-image: radial-gradient(ellipse at 50% 0%, #e8d5c0 0%, transparent 60%),
+                radial-gradient(ellipse at 85% 100%, #e0ceb8 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 16px 60px;
+        }
+        header {
+            text-align: center;
+            padding: 36px 20px 20px;
+            position: relative;
+        }
+        header .icon {
+            font-size: 42px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        header h1 {
+            font-family: var(--font-serif);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: .04em;
+            margin-bottom: 4px;
+        }
+        header .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            letter-spacing: .03em;
+        }
+        .progress-bar-wrap {
+            position: sticky;
+            top: 12px;
+            z-index: 100;
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 10px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+        .progress-bar-wrap .progress-track {
+            flex: 1;
+            height: 8px;
+            background: #e8ddd0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-wrap .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c8956c, #a0784c);
+            border-radius: 10px;
+            transition: width .4s ease;
+            width: 0%;
+        }
+        .progress-bar-wrap .progress-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+            min-width: 48px;
+            text-align: center;
+            letter-spacing: .02em;
+        }
+        .dimension-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .dimension-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .dimension-card.open {
+            border-color: #c8956c;
+        }
+        .dim-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: background .2s;
+            gap: 12px;
+        }
+        .dim-header:hover {
+            background: #fdfaf7;
+        }
+        .dim-header .dim-num {
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            background: var(--primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            letter-spacing: .02em;
+        }
+        .dim-header .dim-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .dim-header .dim-title {
+            font-weight: 650;
+            font-size: 15px;
+            color: var(--text);
+            letter-spacing: .02em;
+        }
+        .dim-header .dim-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: .02em;
+        }
+        .dim-header .dim-arrow {
+            font-size: 18px;
+            color: #b8a590;
+            transition: transform .3s;
+            flex-shrink: 0;
+        }
+        .dimension-card.open .dim-arrow {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+        .dim-body {
+            display: none;
+            padding: 4px 20px 18px;
+            border-top: 1px solid #f0e8dc;
+        }
+        .dimension-card.open .dim-body {
+            display: block;
+        }
+        .question-item {
+            margin-top: 14px;
+            padding: 14px 16px;
+            background: #fdfaf7;
+            border-radius: var(--radius-sm);
+            border: 1px solid #f0e8dc;
+            transition: var(--transition);
+            position: relative;
+        }
+        .question-item.answered {
+            border-color: #d4c0a8;
+            background: #fefcf8;
+        }
+        .question-item .q-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .question-item .q-num {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary-light);
+            background: #f5ede2;
+            padding: 3px 9px;
+            border-radius: 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            letter-spacing: .03em;
+        }
+        .question-item .q-text {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 500;
+            letter-spacing: .015em;
+            line-height: 1.5;
+        }
+        .question-item .q-score-hint {
+            font-size: 10px;
+            color: #b8a590;
+            margin-left: 4px;
+            white-space: nowrap;
+        }
+        .question-item textarea {
+            width: 100%;
+            min-height: 72px;
+            padding: 10px 14px;
+            border: 1px solid #e8ddd0;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-family: var(--font-sans);
+            resize: vertical;
+            background: #fff;
+            color: var(--text);
+            transition: var(--transition);
+            line-height: 1.6;
+            letter-spacing: .015em;
+        }
+        .question-item textarea:focus {
+            outline: none;
+            border-color: #c8956c;
+            box-shadow: 0 0 0 3px rgba(180, 130, 90, .08);
+            background: #fffefb;
+        }
+        .question-item textarea::placeholder {
+            color: #c4b8a8;
+            font-size: 12.5px;
+        }
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 28px;
+            padding: 0 4px;
+        }
+        .btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .03em;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-family: var(--font-sans);
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 3px 14px rgba(100, 60, 30, .18);
+        }
+        .btn-primary:hover {
+            background: #9b6e48;
+            box-shadow: 0 5px 20px rgba(100, 60, 30, .25);
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: #fff;
+            color: var(--primary);
+            border: 1.5px solid #c8956c;
+        }
+        .btn-outline:hover {
+            background: #fdfaf7;
+            border-color: var(--primary);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid #d5c8b8;
+        }
+        .btn-ghost:hover {
+            background: #f9f5f0;
+            border-color: #b8a590;
+        }
+        .toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            padding: 11px 24px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .02em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .12);
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .toast-success {
+            background: #3c6e47;
+            color: #fff;
+        }
+        .toast-info {
+            background: #5c4a3a;
+            color: #fff;
+        }
+        .all-open-hint {
+            text-align: center;
+            margin: 8px 0 0;
+            font-size: 11px;
+            color: #b8a590;
+            letter-spacing: .02em;
+            cursor: pointer;
+            user-select: none;
+        }
+        .all-open-hint:hover {
+            color: var(--primary);
+        }
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 11px;
+            color: #c4b8a8;
+            letter-spacing: .03em;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px 8px 40px;
+            }
+            header h1 {
+                font-size: 22px;
+            }
+            .dim-header {
+                padding: 14px 14px;
+            }
+            .dim-body {
+                padding: 4px 10px 14px;
+            }
+            .question-item {
+                padding: 10px 10px;
+            }
+            .question-item textarea {
+                min-height: 60px;
+                font-size: 13px;
+            }
+            .btn {
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="icon">📋</span>
+            <h1>相亲对象评估问卷</h1>
+            <p class="subtitle">请真诚回答以下问题 · 共40题 · 6个维度</p>
+        </header>
+
+        <div class="progress-bar-wrap" id="progressBarWrap">
+            <span style="font-size:18px;">📝</span>
+            <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+            <span class="progress-label" id="progressLabel">0/40</span>
+        </div>
+
+        <p class="all-open-hint" id="allOpenHint">🔽 点击展开全部维度</p>
+
+        <div id="dimensionsContainer"></div>
+
+        <div class="btn-row">
+            <button class="btn btn-ghost" onclick="saveDraft()" title="保存到浏览器本地">💾 暂存草稿</button>
+            <button class="btn btn-outline" onclick="loadDraft()">📂 恢复草稿</button>
+            <button class="btn btn-primary" onclick="exportData()">📤 导出回答数据</button>
+        </div>
+        <footer>数据仅保存在本地浏览器 · 导出为JSON文件供裁判端使用</footer>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const QUESTIONS = [
+            { id: 1, dim: 1, dimName: '日常消费与生活观念', text: '你平时周末一般喜欢怎么安排？是更愿意出门逛吃探店，还是在家歇着做点自己的事？', score: 1.33 },
+            { id: 2, dim: 1, dimName: '日常消费与生活观念', text: '假如这个月突然多了五千块额外收入，你第一反应会打算怎么分配？', score: 1.33 },
+            { id: 3, dim: 1, dimName: '日常消费与生活观念', text: '你有没有什么坚持了挺久的小爱好？平时会在上面花多少时间和钱？', score: 1.34 },
+            { id: 4, dim: 1, dimName: '日常消费与生活观念', text: '你买东西是更看重品牌和质感，还是觉得够用就行、性价比优先？', score: 1.33 },
+            { id: 5, dim: 1, dimName: '日常消费与生活观念', text: '你有记账或者定期存钱的习惯吗？你觉得对女生来说，经济独立到什么程度算踏实？', score: 1.33 },
+            { id: 6, dim: 1, dimName: '日常消费与生活观念', text: '出门吃饭剩得多的话你会打包吗？你怎么看平时吃饭打包这件事？', score: 1.34 },
+            { id: 7, dim: 2, dimName: '职业成长与处事逻辑', text: '你现在的工作平时忙不忙？最让你满意和最头疼的地方分别是什么？', score: 2 },
+            { id: 8, dim: 2, dimName: '职业成长与处事逻辑', text: '假如工作里出了问题，明明不是你的锅，但领导误会是你做的，你一般会怎么处理？', score: 2 },
+            { id: 9, dim: 2, dimName: '职业成长与处事逻辑', text: '你觉得在职场上想要发展得好，主要靠努力还是靠人脉和选择？为什么？', score: 2 },
+            { id: 10, dim: 2, dimName: '职业成长与处事逻辑', text: '有没有哪件事是你以前觉得特别对，现在想法完全变了的？能说说原因吗？', score: 2 },
+            { id: 11, dim: 2, dimName: '职业成长与处事逻辑', text: '如果让你选，你倾向于稳定轻松但收入一般的工作，还是忙一点但上升空间大、赚得多的？', score: 2 },
+            { id: 12, dim: 2, dimName: '职业成长与处事逻辑', text: '平时遇到不懂的问题，你是习惯自己查资料搞明白，还是直接问身边的人？', score: 2 },
+            { id: 13, dim: 2, dimName: '职业成长与处事逻辑', text: '你怎么看待上班"摸鱼"这件事？你平时会有摸鱼的时候吗？', score: 2 },
+            { id: 14, dim: 3, dimName: '家庭代际与成长背景', text: '你爸妈平时的相处模式是什么样的？是一个人说了算还是有事一起商量？', score: 3 },
+            { id: 15, dim: 3, dimName: '家庭代际与成长背景', text: '你家里大事一般是谁拿主意？你自己的事，爸妈会插手很多吗？', score: 3 },
+            { id: 16, dim: 3, dimName: '家庭代际与成长背景', text: '你爸妈平时工作/退休了都喜欢干点啥？生活里有什么固定的习惯吗？', score: 3 },
+            { id: 17, dim: 3, dimName: '家庭代际与成长背景', text: '过年回家亲戚会催你找对象或者问收入吗？你一般怎么应对？', score: 3 },
+            { id: 18, dim: 3, dimName: '家庭代际与成长背景', text: '从小到大，爸妈对你影响最大的一句话或者一件事是什么？', score: 3 },
+            { id: 19, dim: 3, dimName: '家庭代际与成长背景', text: '你觉得爸妈那辈人的观念里，有哪些你特别认同，哪些你完全没法接受？', score: 3 },
+            { id: 20, dim: 3, dimName: '家庭代际与成长背景', text: '你平时多久跟家里联系一次？一般都会聊些什么内容？', score: 3 },
+            { id: 21, dim: 4, dimName: '婚恋关系与责任认知', text: '你身边有没有结婚之后过得特别好或者特别差的朋友？你觉得主要原因是什么？', score: 3.5 },
+            { id: 22, dim: 4, dimName: '婚恋关系与责任认知', text: '你觉得两个人在一起，最重要的三个品质是什么？为什么是这三个？', score: 3.5 },
+            { id: 23, dim: 4, dimName: '婚恋关系与责任认知', text: '假如两个人吵架了，你觉得正确的处理方式应该是什么样的？', score: 3.5 },
+            { id: 24, dim: 4, dimName: '婚恋关系与责任认知', text: '你怎么看待"男生就该赚钱养家，女生负责貌美如花"这句话？', score: 3.5 },
+            { id: 25, dim: 4, dimName: '婚恋关系与责任认知', text: '如果结婚的话，你觉得彩礼和婚房这些事，怎么安排才算合理？', score: 3.5 },
+            { id: 26, dim: 4, dimName: '婚恋关系与责任认知', text: '你觉得结婚之后，家务和带孩子应该怎么分配比较合适？', score: 3.5 },
+            { id: 27, dim: 4, dimName: '婚恋关系与责任认知', text: '你能接受另一半有异性好朋友吗？你觉得相处的边界在哪？', score: 3.5 },
+            { id: 28, dim: 4, dimName: '婚恋关系与责任认知', text: '如果另一半工作遇到低谷，收入大幅下降，你会怎么想、怎么做？', score: 3.5 },
+            { id: 29, dim: 5, dimName: '社会认知与判断能力', text: '你有没有发现现在年轻人越来越不想结婚生孩子了？你觉得主要原因是什么？', score: 2 },
+            { id: 30, dim: 5, dimName: '社会认知与判断能力', text: '现在网上很多人说"努力没用"，你认同这句话吗？为什么？', score: 2 },
+            { id: 31, dim: 5, dimName: '社会认知与判断能力', text: '平时刷短视频或者看新闻，遇到不同的观点，你一般怎么判断谁说的有道理？', score: 2 },
+            { id: 32, dim: 5, dimName: '社会认知与判断能力', text: '你觉得"寒门难出贵子"这句话对吗？你觉得最大的问题出在哪？', score: 2 },
+            { id: 33, dim: 5, dimName: '社会认知与判断能力', text: '如果看到网上有人因为一件事吵得特别凶，你会站队发言吗？还是先看看再说？', score: 2 },
+            { id: 34, dim: 5, dimName: '社会认知与判断能力', text: '你觉得现在的女生，最大的压力和最大的优势分别是什么？', score: 2 },
+            { id: 35, dim: 6, dimName: '自我认知与性格特质', text: '你觉得自己性格里最大的优点和最大的缺点分别是什么？', score: 2.83 },
+            { id: 36, dim: 6, dimName: '自我认知与性格特质', text: '你平时生气的时候，是会当场说出来，还是自己憋着生闷气？', score: 2.83 },
+            { id: 37, dim: 6, dimName: '自我认知与性格特质', text: '你是更怕麻烦别人，还是觉得互相帮忙关系才会更好？', score: 2.84 },
+            { id: 38, dim: 6, dimName: '自我认知与性格特质', text: '如果别人指出你的错误，你第一反应是辩解，还是先听听有没有道理？', score: 2.83 },
+            { id: 39, dim: 6, dimName: '自我认知与性格特质', text: '你身边的朋友一般都是怎么评价你的？你觉得他们说的准吗？', score: 2.83 },
+            { id: 40, dim: 6, dimName: '自我认知与性格特质', text: '你理想中十年后的自己，是什么样的生活状态？', score: 2.84 },
+        ];
+
+        const DIM_NAMES = ['日常消费与生活观念', '职业成长与处事逻辑', '家庭代际与成长背景', '婚恋关系与责任认知', '社会认知与判断能力',
+            '自我认知与性格特质'
+        ];
+        const DIM_SCORES = [8, 14, 21, 28, 12, 17];
+        const DIM_COUNTS = [6, 7, 7, 8, 6, 6];
+
+        function buildDimensions() {
+            const container = document.getElementById('dimensionsContainer');
+            const dimGroups = {};
+            QUESTIONS.forEach(q => {
+                if (!dimGroups[q.dim]) dimGroups[q.dim] = [];
+                dimGroups[q.dim].push(q);
+            });
+
+            let html = '';
+            for (let d = 1; d <= 6; d++) {
+                const qs = dimGroups[d] || [];
+                html += `
+                <div class="dimension-card" id="dimCard${d}">
+                    <div class="dim-header" onclick="toggleDim(${d})">
+                        <div class="dim-num">${d}</div>
+                        <div class="dim-info">
+                            <div class="dim-title">维度${d}：${DIM_NAMES[d-1]}</div>
+                            <div class="dim-meta">${DIM_COUNTS[d-1]}题 · 维度总分${DIM_SCORES[d-1]}分</div>
+                        </div>
+                        <span class="dim-arrow">▼</span>
+                    </div>
+                    <div class="dim-body" id="dimBody${d}">
+                        ${qs.map(q => `
+                        <div class="question-item" id="qItem${q.id}">
+                            <div class="q-header">
+                                <span class="q-num">第${q.id}题</span>
+                                <span class="q-text">${q.text}<span class="q-score-hint">(${q.score.toFixed(2)}分)</span></span>
+                            </div>
+                            <textarea id="answer${q.id}" placeholder="请输入你的回答..." oninput="onAnswerInput(${q.id})"></textarea>
+                        </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+            container.innerHTML = html;
+            // 默认展开第一个维度
+            toggleDim(1, true);
+        }
+
+        function toggleDim(d, forceOpen = false) {
+            const card = document.getElementById('dimCard' + d);
+            const isOpen = card.classList.contains('open');
+            if (forceOpen && !isOpen) {
+                card.classList.add('open');
+            } else if (!forceOpen) {
+                card.classList.toggle('open');
+            }
+            updateAllOpenHint();
+        }
+
+        function updateAllOpenHint() {
+            const allOpen = document.querySelectorAll('.dimension-card.open').length === 6;
+            document.getElementById('allOpenHint').textContent = allOpen ? '🔼 点击折叠全部维度' : '🔽 点击展开全部维度';
+        }
+
+        document.getElementById('allOpenHint').addEventListener('click', function() {
+            const allOpen = document.querySelectorAll('.dimension-card.open').length === 6;
+            const cards = document.querySelectorAll('.dimension-card');
+            cards.forEach(c => {
+                if (allOpen) c.classList.remove('open');
+                else c.classList.add('open');
+            });
+            updateAllOpenHint();
+            if (!allOpen) {
+                document.getElementById('dimCard1').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+
+        function onAnswerInput(id) {
+            const textarea = document.getElementById('answer' + id);
+            const qItem = document.getElementById('qItem' + id);
+            if (textarea.value.trim()) {
+                qItem.classList.add('answered');
+            } else {
+                qItem.classList.remove('answered');
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let answered = 0;
+            for (let i = 1; i <= 40; i++) {
+                const ta = document.getElementById('answer' + i);
+                if (ta && ta.value.trim()) answered++;
+            }
+            const pct = Math.round((answered / 40) * 100);
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressLabel').textContent = answered + '/40';
+        }
+
+        function getAllAnswers() {
+            const answers = {};
+            for (let i = 1; i <= 40; i++) {
+                const ta = document.getElementById('answer' + i);
+                answers[i] = ta ? ta.value.trim() : '';
+            }
+            return answers;
+        }
+
+        function exportData() {
+            const answers = getAllAnswers();
+            const answeredCount = Object.values(answers).filter(a => a).length;
+            if (answeredCount === 0) {
+                showToast('请至少回答一道题再导出', 'info');
+                return;
+            }
+            const data = {
+                version: '1.0',
+                exportTime: new Date().toISOString(),
+                answeredCount: answeredCount,
+                totalQuestions: 40,
+                answers: answers
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '相亲评估问卷_回答_' + new Date().toISOString().slice(0, 10) + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('✅ 数据已导出！共' + answeredCount + '道题已作答', 'success');
+        }
+
+        function saveDraft() {
+            const answers = getAllAnswers();
+            const data = { exportTime: new Date().toISOString(), answers: answers };
+            localStorage.setItem('xiangqin_draft', JSON.stringify(data));
+            const count = Object.values(answers).filter(a => a).length;
+            showToast('💾 草稿已保存（' + count + '/40题）', 'success');
+        }
+
+        function loadDraft() {
+            const raw = localStorage.getItem('xiangqin_draft');
+            if (!raw) {
+                showToast('没有找到草稿记录', 'info');
+                return;
+            }
+            try {
+                const data = JSON.parse(raw);
+                const answers = data.answers || {};
+                let restored = 0;
+                for (let i = 1; i <= 40; i++) {
+                    const ta = document.getElementById('answer' + i);
+                    if (ta && answers[i]) {
+                        ta.value = answers[i];
+                        onAnswerInput(i);
+                        restored++;
+                    }
+                }
+                showToast('📂 已恢复草稿（' + restored + '/40题）', 'success');
+                updateProgress();
+            } catch (e) {
+                showToast('草稿数据损坏，无法恢复', 'info');
+            }
+        }
+
+        function showToast(msg, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast toast-' + type + ' show';
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => { toast.classList.remove('show'); }, 2200);
+        }
+
+        // 初始化
+        buildDimensions();
+        updateProgress();
+
+        // 尝试自动恢复草稿提示
+        const draftRaw = localStorage.getItem('xiangqin_draft');
+        if (draftRaw) {
+            try {
+                const draft = JSON.parse(draftRaw);
+                const cnt = Object.values(draft.answers || {}).filter(a => a).length;
+                if (cnt > 0) {
+                    setTimeout(() => showToast('💡 检测到草稿（' + cnt + '题），点击"恢复草稿"加载', 'info'), 800);
+                }
+            } catch (e) {}
+        }
+
+        // 键盘快捷键 Ctrl+S 保存草稿
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                saveDraft();
+            }
+        });
+
+        console.log('📋 相亲评估问卷已就绪 | 共40题6个维度 | Ctrl+S保存草稿');
+        console.log('维度分布：消费观8分 | 职业逻辑14分 | 家庭背景21分 | 婚恋三观28分 | 社会认知12分 | 自我认知17分');
+    </script>
+</body>
+</html>
